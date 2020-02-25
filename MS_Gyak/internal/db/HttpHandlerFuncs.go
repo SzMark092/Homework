@@ -15,16 +15,24 @@ type html_API struct {
 
 //Start listening, get handle functions.
 func (h html_API) startListen() error {
-	/*
-		http.HandleFunc("/create/", http.makeHandler(createTable))
-		http.HandleFunc("/getTable/", http.makeHandler(gettable))
-		http.HandleFunc("/getDataPage/", http.makeHandler(gettable))
-	*/
+
+	http.HandleFunc("/create/", h.createTableResponse)
+	http.HandleFunc("/getTable/", h.getTableResponse)
+	http.HandleFunc("/getDataPage/", h.getDataPage)
+
 	err := http.ListenAndServe(h.PortNum, nil)
 
 	return err
 }
 
+//Get a blank data page.
+func (h html_API) getDataPage(w http.ResponseWriter, r *http.Request) {
+
+	http.ServeFile(w, r, "DataPage.html")
+
+}
+
+//Get the specified table.
 func (h html_API) getTableResponse(w http.ResponseWriter, r *http.Request) {
 
 	var err error
@@ -45,6 +53,7 @@ func (h html_API) getTableResponse(w http.ResponseWriter, r *http.Request) {
 
 }
 
+//Create the specified table.
 func (h html_API) createTableResponse(w http.ResponseWriter, r *http.Request) {
 
 	var err error
