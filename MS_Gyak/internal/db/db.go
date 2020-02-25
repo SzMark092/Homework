@@ -1,8 +1,8 @@
 package db
 
 import (
+	"errors"
 	"fmt"
-
 	"github.com/go-pg/pg/v9"
 	"github.com/go-pg/pg/v9/orm"
 )
@@ -55,6 +55,27 @@ func NewHandler(conn *pg.DB, tempTable bool) (*Handler, error) {
 	return handler, nil
 }
 
+//Get the model type connected to the given code.
+func getModelType(CodeOfType int) (interface{}, error) {
+
+	var modelType interface{}
+	var err error
+
+	switch CodeOfType {
+
+	case 1:
+		modelType = &DataPointDescription{}
+	case 2:
+		modelType = &DataPoint{}
+	case 3:
+		modelType = &Module{}
+	default:
+		err = errors.New("Wrong type code.")
+	}
+
+	return modelType, err
+}
+
 //Make table from the given struct.
 func (h Handler) makeTable(actModelStruct interface{}) error {
 	return h.conn.CreateTable(actModelStruct, &orm.CreateTableOptions{
@@ -69,7 +90,7 @@ func (h Handler) Close() error {
 	return h.conn.Close()
 }
 
-//Add DataPointDescription type, to the table.
+//Make table with the given data type.
 func (h Handler) ModelInsert(actModelStruct interface{}) (interface{}, error) {
 	result, err := h.conn.Model(actModelStruct).Returning("*").Insert()
 	if err == nil && result.RowsReturned() != 1 {
