@@ -35,24 +35,27 @@ type Handler struct {
 	tempTable bool
 }
 
-func NewHandler(conn *pg.DB, tempTable bool) (*Handler, error) {
+func NewHandler(conn *pg.DB, tempTable bool, createAllTable bool) (*Handler, error) {
 	handler := &Handler{
 		conn:      conn,
 		tempTable: tempTable,
 	}
 
-	if err := handler.MakeTable(&DataPointDescription{}); err != nil {
-		return nil, err
-	}
+	if createAllTable {
 
-	if err := handler.MakeTable(&Module{}); err != nil {
-		return nil, err
-	}
+		if err := handler.MakeTable(&DataPointDescription{}); err != nil {
+			return nil, err
+		}
 
-	if err := handler.MakeTable(&DataPoint{}); err != nil {
-		return nil, err
-	}
+		if err := handler.MakeTable(&Module{}); err != nil {
+			return nil, err
+		}
 
+		if err := handler.MakeTable(&DataPoint{}); err != nil {
+			return nil, err
+		}
+
+	}
 	return handler, nil
 }
 
@@ -71,7 +74,7 @@ func GetModelType(CodeOfType int) (interface{}, error) {
 	case 3:
 		modelType = &Module{}
 	default:
-		err = errors.New("Wrong type code.")
+		err = errors.New("Wrong type-code.")
 	}
 
 	return modelType, err

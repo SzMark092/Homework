@@ -1,32 +1,42 @@
 
 //Send a number to the server, and a function code.
-function getTableData() {
+function getTableData(dataType) {
+
 
     var xhttp = new XMLHttpRequest();
 
-    xhttp.open("GET", "localhost:8080/getTable?tableType=", false);
+    xhttp.responseType = 'json';
+    xhttp.open("GET", "localhost:8080/getTable?tableType=" + dataType, false);
+    xhttp.send();
+
+    var jsonInput = JSON.parse(xhttp.response);
+
+    var resultelement = document.getElementById('result').appendChild(document.createTextNode(jsonInput))
 
 }
 
-function createTable() {
+function createTable(dataType) {
 
-
-
-}
-
-function parseJSON() {
-
-
+    xhttp.responseType = 'json';
+    xhttp.open("GET", "localhost:8080/create?tableType=" + dataType, false);
+    xhttp.send();
 
 }
 
-/*function createTable{
+function chooseAction() {
 
-var x = document.getElementById("dataSelector");
+    var actionType = document.getElementById('actionSelector').value
 
-x.options
+    var dataType = document.getElementById('dataSelector').value
 
-var xhttp = new XMLHttpRequest();
+    if (actionType == 1) {
 
-xhttp.open("PUT", "localhost:8080/tableType=" + "", false);
-}*/
+        createTable(dataType)
+
+    } else {
+
+        getTableData(dataType)
+
+    }
+
+}
