@@ -3,6 +3,7 @@ package db
 import (
 	"errors"
 	"fmt"
+
 	"github.com/go-pg/pg/v9"
 	"github.com/go-pg/pg/v9/orm"
 )
@@ -40,15 +41,15 @@ func NewHandler(conn *pg.DB, tempTable bool) (*Handler, error) {
 		tempTable: tempTable,
 	}
 
-	if err := handler.makeTable(&DataPointDescription{}); err != nil {
+	if err := handler.MakeTable(&DataPointDescription{}); err != nil {
 		return nil, err
 	}
 
-	if err := handler.makeTable(&Module{}); err != nil {
+	if err := handler.MakeTable(&Module{}); err != nil {
 		return nil, err
 	}
 
-	if err := handler.makeTable(&DataPoint{}); err != nil {
+	if err := handler.MakeTable(&DataPoint{}); err != nil {
 		return nil, err
 	}
 
@@ -56,7 +57,7 @@ func NewHandler(conn *pg.DB, tempTable bool) (*Handler, error) {
 }
 
 //Get the model type connected to the given code.
-func getModelType(CodeOfType int) (interface{}, error) {
+func GetModelType(CodeOfType int) (interface{}, error) {
 
 	var modelType interface{}
 	var err error
@@ -77,7 +78,7 @@ func getModelType(CodeOfType int) (interface{}, error) {
 }
 
 //Make table from the given struct.
-func (h Handler) makeTable(actModelStruct interface{}) error {
+func (h Handler) MakeTable(actModelStruct interface{}) error {
 	return h.conn.CreateTable(actModelStruct, &orm.CreateTableOptions{
 		Temp:          h.tempTable,
 		FKConstraints: true,

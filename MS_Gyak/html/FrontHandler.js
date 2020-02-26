@@ -4,7 +4,7 @@ function getTableData() {
 
     var xhttp = new XMLHttpRequest();
 
-    xhttp.open("GET", "localhost:8080/tableType=", false);
+    xhttp.open("GET", "localhost:8080/getTable?tableType=", false);
 
 }
 

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"net/http"
+
 	//"fmt"
-	"github.com/SzMark092/MS_Gyak/internal/HtmlHandlerFuncs"
 	"github.com/SzMark092/MS_Gyak/internal/db"
+	"github.com/SzMark092/MS_Gyak/internal/web"
 )
 
 func main() {
@@ -21,8 +21,9 @@ func main() {
 
 	defer GlobalHandler.Close()
 
-	//The http listen code
-	http.HandleFunc("/", handler)
-
-	http.ListenAndServe(":8080", nil)
+	restApi := web.RestApi{
+		PortNum:       ":8080",
+		ActSQLhandler: GlobalHandler,
+	}
+	restApi.StartListen()
 }
