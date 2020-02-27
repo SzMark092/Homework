@@ -94,7 +94,7 @@ func (h Handler) Close() error {
 	return h.conn.Close()
 }
 
-//Make table with the given data type.
+//Place in data with the given type.
 func (h Handler) ModelInsert(actModelStruct interface{}) (interface{}, error) {
 	result, err := h.conn.Model(actModelStruct).Returning("*").Insert()
 	if err == nil && result.RowsReturned() != 1 {
