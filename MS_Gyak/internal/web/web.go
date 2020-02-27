@@ -31,7 +31,7 @@ func (h RestApi) StartListen() error {
 //Get a blank data page.
 func (h RestApi) getHtmlPage(w http.ResponseWriter, r *http.Request) {
 	wd, _ := os.Getwd()
-	http.ServeFile(w, r, wd+"/html/HomePage.html"/*+r.URL.EscapedPath()*/)
+	http.ServeFile(w, r, wd+"/html/HomePage.html" /*+r.URL.EscapedPath()*/)
 }
 
 //Get the specified table.
@@ -66,7 +66,7 @@ func (h RestApi) createTableResponse(w http.ResponseWriter, r *http.Request) {
 
 	typeCode, _ = strconv.Atoi(r.Form.Get("typeCode"))
 
-	actTypeData, err = db.GetModelType(typeCode)
+	actTypeData, _, err = db.GetModelType(typeCode)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -81,18 +81,18 @@ func (h RestApi) createTableResponse(w http.ResponseWriter, r *http.Request) {
 func (h RestApi) makeJson(CodeOfType int) ([]byte, error) {
 
 	var actTypeData interface{} = nil
-	var actTypeDataList []interface{} = nil
+	var actTypeDataList interface{} = nil
 
 	var err []error = nil //Store errors.
 	var result []byte
 
-	actTypeData, err[0] = db.GetModelType(CodeOfType)
+	actTypeData, actTypeDataList, err[0] = db.GetModelType(CodeOfType)
 	actTypeDataList, err[0] = h.ActSQLhandler.SelectAllData(actTypeData)
-	result, err[1] = json.Marshal(actTypeDataList)
-
 	if err[0] != nil {
 		return result, err[0]
 	}
+
+	result, err[1] = json.Marshal(actTypeDataList)
 
 	return result, err[1]
 

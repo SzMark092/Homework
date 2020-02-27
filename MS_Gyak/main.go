@@ -13,7 +13,7 @@ func main() {
 	var err error
 	var GlobalHandler *db.Handler
 
-	GlobalHandler, err = db.NewHandler(conn, false, true)
+	GlobalHandler, err = db.NewHandler(conn, false, false)
 
 	if err != nil {
 		panic(err)

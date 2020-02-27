@@ -60,24 +60,27 @@ func NewHandler(conn *pg.DB, tempTable bool, createAllTable bool) (*Handler, err
 }
 
 //Get the model type connected to the given code.
-func GetModelType(CodeOfType int) (interface{}, error) {
+func GetModelType(CodeOfType int) (interface{}, interface{}, error) {
 
 	var modelType interface{}
+	var modelTypeList interface{}
 	var err error
 
 	switch CodeOfType {
 
 	case 1:
 		modelType = &DataPointDescription{}
+		modelTypeList = &[]DataPointDescription{}
 	case 2:
 		modelType = &DataPoint{}
+		modelTypeList = &[]DataPoint{}
 	case 3:
 		modelType = &Module{}
 	default:
 		err = errors.New("Wrong type-code.")
 	}
 
-	return modelType, err
+	return modelType, modelTypeList, err
 }
 
 //Make table from the given struct.

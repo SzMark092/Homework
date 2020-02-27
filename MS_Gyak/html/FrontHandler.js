@@ -23,7 +23,7 @@ function createTable(dataType) {
 
 }
 
-function chooseAction() {
+function callChoosenAction() {
 
     var actionType = document.getElementById('actionSelector').value
 
