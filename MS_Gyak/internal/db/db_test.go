@@ -3,8 +3,10 @@ package db
 import (
 	"fmt"
 	"math/rand"
+	"reflect"
+	"strconv"
 
-	"github.com/stretchr/testify/assert"
+	//"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -35,11 +37,32 @@ func randomString(length int) string {
 	return result
 }
 
+func randomDataPDesc(numberOfData int) []DataPointDescription {
+
+	var listOfStructs = make([]DataPointDescription, numberOfData)
+
+	for i := 0; i < numberOfData; i++ {
+
+		var actStruct DataPointDescription
+
+		actStruct.ID = int64(rand.Int())
+		actStruct.Name = randomString(10)
+		actStruct.Title = randomString(10)
+		actStruct.Min = rand.Int()
+		actStruct.Max = rand.Int()
+
+		listOfStructs[i] = actStruct
+
+	}
+
+	return listOfStructs
+}
+
 func makeTestDb() *Handler {
 
-	conn := MakeConnection("postgres", "1234", "localhost:5432", "TestDb")
+	conn := MakeConnection("postgres", "1234", "localhost:5432", "prod")
 
-	handler, err := NewHandler(conn, true, false)
+	handler, err := NewHandler(conn, false, false)
 	if err != nil {
 		panic(err)
 	}
@@ -59,24 +82,60 @@ func TestMakeConn(*testing.T) {
 func TestInsertSomeData(*testing.T) {
 
 	handler := makeTestDb()
+	var err error
 
 	fmt.Println("Make DataPointDescription table.")
 
 	var actData = DataPointDescription{1, "fgfd", "sfsdf", 5, 10}
 
-	if err := handler.MakeTable(&actData); err != nil {
+	if err = handler.MakeTable(&actData); err != nil {
 		fmt.Println("Making of DataPointDescription table failed.")
 		return
 	}
 
-	if err = handler.ModelInsert(actData); err != nil {
-		fmt.Println("Making of DataPointDescription table failed.")
+	if _, err = handler.ModelInsert(&actData); err != nil {
+		fmt.Println("Making of DataPointDescription table failed. Error:" + err.Error())
 		return
 	}
 
 }
 
-func TestGetAllDataOfType(*testing.T) {
+func TestGetAllDataOfType(t *testing.T) {
+
+	handler := makeTestDb()
+	var result []interface{}
+	var err error
+
+	if result, err = handler.SelectAllData(DataPointDescription{}); err != nil {
+		t.Logf("Failed to get data from table.")
+		return
+	}
+
+	for i := 0; i < len(result); i++ {
+		t.Logf(strconv.Itoa(i)+". row: "+"%+v", result[i])
+	}
+
+}
+
+func TestGetModeType(*testing.T) {
+	var results [3]interface{}
+	var err error
+
+	for i := 0; i < 3; i++ {
+
+		results[i], _, err = GetModelType(1)
+		if err != nil {
+
+			println(err.Error())
+
+		} else {
+
+			println("The type of the actual model:" + reflect.TypeOf(results[i]))
+
+		}
+
+		err = nil
+	}
 
 }
 
