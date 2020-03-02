@@ -3,7 +3,6 @@ package db
 import (
 	"fmt"
 	"math/rand"
-	"reflect"
 	"strconv"
 
 	//"github.com/stretchr/testify/assert"
@@ -72,14 +71,14 @@ func makeTestDb() *Handler {
 	return handler
 }
 
-func TestMakeConn(*testing.T) {
+func TestMakeConn(t *testing.T) {
 	handler := makeTestDb()
 	defer handler.Close() //nolint:errcheck,gocritic
 
 	println("Try to close connection.")
 }
 
-func TestInsertSomeData(*testing.T) {
+func TestInsertSomeData(t *testing.T) {
 
 	handler := makeTestDb()
 	var err error
@@ -88,13 +87,13 @@ func TestInsertSomeData(*testing.T) {
 
 	var actData = DataPointDescription{1, "fgfd", "sfsdf", 5, 10}
 
-	if err = handler.MakeTable(&actData); err != nil {
-		fmt.Println("Making of DataPointDescription table failed.")
+	if err = handler.MakeDataPointDescriptionTable(); err != nil {
+		t.Log("Making of DataPointDescription table failed.")
 		return
 	}
 
 	if _, err = handler.ModelInsert(&actData); err != nil {
-		fmt.Println("Making of DataPointDescription table failed. Error:" + err.Error())
+		t.Log("Making of DataPointDescription table failed. Error:" + err.Error())
 		return
 	}
 
@@ -103,10 +102,10 @@ func TestInsertSomeData(*testing.T) {
 func TestGetAllDataOfType(t *testing.T) {
 
 	handler := makeTestDb()
-	var result []interface{}
+	var result []DataPointDescription
 	var err error
 
-	if result, err = handler.SelectAllData(DataPointDescription{}); err != nil {
+	if result, err = handler.GetDataPointDescriptionTable(); err != nil {
 		t.Logf("Failed to get data from table.")
 		return
 	}
@@ -116,40 +115,3 @@ func TestGetAllDataOfType(t *testing.T) {
 	}
 
 }
-
-func TestGetModeType(*testing.T) {
-	var results [3]interface{}
-	var err error
-
-	for i := 0; i < 3; i++ {
-
-		results[i], _, err = GetModelType(1)
-		if err != nil {
-
-			println(err.Error())
-
-		} else {
-
-			println("The type of the actual model:" + reflect.TypeOf(results[i]))
-
-		}
-
-		err = nil
-	}
-
-}
-
-/*
-func TestDataPointDescriptionInsert(t *testing.T) {
-	handler := makeTestDb()
-	defer handler.Close()
-
-	dpd, err := handler.DataPointDescriptionInsert(
-		"NAME", "TITLE",
-		100, 1,
-	)
-
-	assert.Nil(t, err, "INSERT")
-	assert.NotZero(t, dpd.ID, "INSERT")
-}
-*/

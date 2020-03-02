@@ -2,6 +2,7 @@ package web
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"os"
 	"strconv"
@@ -60,40 +61,57 @@ func (h RestApi) createTableResponse(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 	var typeCode int
-	var actTypeData interface{}
 
 	r.ParseForm()
 
 	typeCode, _ = strconv.Atoi(r.Form.Get("typeCode"))
 
-	actTypeData, _, err = db.GetModelType(typeCode)
+	switch typeCode {
 
+	case 1:
+		h.ActSQLhandler.MakeDataPointDescriptionTable()
+
+	case 2:
+		h.ActSQLhandler.MakeDataPointTable()
+
+	case 3:
+		h.ActSQLhandler.MakeModuleTable()
+
+	default:
+		err = errors.New("Wrong type-code.")
+
+	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	h.ActSQLhandler.MakeTable(actTypeData)
 
 }
 
 //Make a table of data as JSON.
 func (h RestApi) makeJson(CodeOfType int) ([]byte, error) {
 
-	var actTypeData interface{} = nil
 	var actTypeDataList interface{} = nil
 
-	var err []error = nil //Store errors.
+	var err error = nil
 	var result []byte
 
-	actTypeData, actTypeDataList, err[0] = db.GetModelType(CodeOfType)
-	actTypeDataList, err[0] = h.ActSQLhandler.SelectAllData(actTypeData)
-	if err[0] != nil {
-		return result, err[0]
+	switch CodeOfType {
+	case 1:
+		actTypeDataList, err = h.ActSQLhandler.GetDataPointDescriptionTable()
+	case 2:
+		actTypeDataList, err = h.ActSQLhandler.GetDataPointTable()
+	case 3:
+		actTypeDataList, err = h.ActSQLhandler.GetModuleTable()
+	default:
+		err = errors.New("Wrong type-code.")
+	}
+	if err != nil {
+		return result, err
 	}
 
-	result, err[1] = json.Marshal(actTypeDataList)
+	result, err = json.Marshal(actTypeDataList)
 
-	return result, err[1]
+	return result, err
 
 }

@@ -43,15 +43,15 @@ func NewHandler(conn *pg.DB, tempTable bool, createAllTable bool) (*Handler, err
 
 	if createAllTable {
 
-		if err := handler.MakeTable(&DataPointDescription{}); err != nil {
+		if err := handler.makeTable(&DataPointDescription{}); err != nil {
 			return nil, err
 		}
 
-		if err := handler.MakeTable(&Module{}); err != nil {
+		if err := handler.makeTable(&Module{}); err != nil {
 			return nil, err
 		}
 
-		if err := handler.MakeTable(&DataPoint{}); err != nil {
+		if err := handler.makeTable(&DataPoint{}); err != nil {
 			return nil, err
 		}
 
@@ -60,7 +60,7 @@ func NewHandler(conn *pg.DB, tempTable bool, createAllTable bool) (*Handler, err
 }
 
 //Get the model type connected to the given code.
-func GetModelType(CodeOfType int) (interface{}, interface{}, error) {
+func getModelType(CodeOfType int) (interface{}, interface{}, error) {
 
 	var modelType interface{}
 	var modelTypeList interface{}
@@ -84,7 +84,7 @@ func GetModelType(CodeOfType int) (interface{}, interface{}, error) {
 }
 
 //Make table from the given struct.
-func (h Handler) MakeTable(actModelStruct interface{}) error {
+func (h Handler) makeTable(actModelStruct interface{}) error {
 	return h.conn.CreateTable(actModelStruct, &orm.CreateTableOptions{
 		Temp:          h.tempTable,
 		FKConstraints: true,
@@ -106,11 +106,12 @@ func (h Handler) ModelInsert(actModelStruct interface{}) (interface{}, error) {
 	return actModelStruct, err
 }
 
-//Select all data of a specific type.
-func (h Handler) SelectAllData(actModelStructToSelect interface{}) ([]interface{}, error) {
-	var rows []interface{}
+//Get the DataPointDescription table.
+func (h Handler) GetDataPointDescriptionTable() ([]DataPointDescription, error) {
 
-	count, err := h.conn.Model(actModelStructToSelect).Count()
+	var rows []DataPointDescription
+
+	count, err := h.conn.Model(&DataPointDescription{}).Count()
 	if err != nil {
 		return nil, err
 	}
@@ -120,6 +121,62 @@ func (h Handler) SelectAllData(actModelStructToSelect interface{}) ([]interface{
 		return nil, err
 	}
 
-	return rows, nil
+	return rows, err
 
+}
+
+//Get the DataPoint table
+func (h Handler) GetDataPointTable() ([]DataPoint, error) {
+
+	var rows []DataPoint
+
+	count, err := h.conn.Model(&DataPoint{}).Count()
+	if err != nil {
+		return nil, err
+	}
+
+	err = h.conn.Model(&rows).Limit(count).Select()
+	if err != nil {
+		return nil, err
+	}
+
+	return rows, err
+
+}
+
+//Get the DataPoint table
+func (h Handler) GetModuleTable() ([]Module, error) {
+
+	var rows []Module
+
+	count, err := h.conn.Model(&Module{}).Count()
+	if err != nil {
+		return nil, err
+	}
+
+	err = h.conn.Model(&rows).Limit(count).Select()
+	if err != nil {
+		return nil, err
+	}
+
+	return rows, err
+
+}
+
+//Make DataPointDescription table.
+func (h Handler) MakeDataPointDescriptionTable() error {
+	err := h.makeTable(DataPointDescription{})
+	return err
+}
+
+//Make DataPoint table.
+func (h Handler) MakeDataPointTable() error {
+	err := h.makeTable(DataPoint{})
+	return err
+}
+
+//Make Module table.
+func (h Handler) MakeModuleTable() error {
+	err := h.makeTable(Module{})
+	return err
 }
