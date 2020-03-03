@@ -17,7 +17,7 @@ function getTableData(dataType) {
 
 function createTable(dataType) {
 
-    xhttp.open("SET", "localhost:8080/create?tableType=" + dataType, false);
+    xhttp.open("POST", "localhost:8080/create?tableType=" + dataType, false);
     xhttp.send();
 
 }

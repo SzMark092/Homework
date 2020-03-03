@@ -78,7 +78,7 @@ func TestMakeConn(t *testing.T) {
 	println("Try to close connection.")
 }
 
-func TestInsertSomeData(t *testing.T) {
+func TestInsertSomeDataDataPointDescription(t *testing.T) {
 
 	handler := makeTestDb()
 	var err error
@@ -99,7 +99,7 @@ func TestInsertSomeData(t *testing.T) {
 
 }
 
-func TestGetAllDataOfType(t *testing.T) {
+func TestGetDataPointDescriptionTable(t *testing.T) {
 
 	handler := makeTestDb()
 	var result []DataPointDescription

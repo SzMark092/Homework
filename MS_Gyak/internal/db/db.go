@@ -165,18 +165,18 @@ func (h Handler) GetModuleTable() ([]Module, error) {
 
 //Make DataPointDescription table.
 func (h Handler) MakeDataPointDescriptionTable() error {
-	err := h.makeTable(DataPointDescription{})
+	err := h.makeTable(&DataPointDescription{})
 	return err
 }
 
 //Make DataPoint table.
 func (h Handler) MakeDataPointTable() error {
-	err := h.makeTable(DataPoint{})
+	err := h.makeTable(&DataPoint{})
 	return err
 }
 
 //Make Module table.
 func (h Handler) MakeModuleTable() error {
-	err := h.makeTable(Module{})
+	err := h.makeTable(&Module{})
 	return err
 }
