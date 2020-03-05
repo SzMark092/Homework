@@ -21,6 +21,9 @@ paths:
       operationId: "getHomePage"
       produces:
       - "text/html"
+      responses:
+        200:
+          description: "Home page is ready."
   
   /CreateTable:
     post:
@@ -33,9 +36,9 @@ paths:
       - name: "TableType"
         in: "query"
         description: "Type of the table that have to be created."
+        type: "integer"
         required: true
-        schema:
-          $ref: "#/definitions/Pet"
+
       responses:
         405:
           description: "Invalid input"
@@ -53,14 +56,11 @@ paths:
         type: "integer"
         description: "Type of the table that have to be created."
         required: true
-
+      produces:
+        - application/json
       responses:
         200:
-            description: Send the table.
-            schema:
-              type: string
-              items:
-                $ref: "#/definitions/item"
+          description: "JSON object containing table information"
         405:
           description: "Invalid input"
           
