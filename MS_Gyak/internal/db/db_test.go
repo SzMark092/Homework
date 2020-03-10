@@ -78,6 +78,15 @@ func TestMakeConn(t *testing.T) {
 	println("Try to close connection.")
 }
 
+func TestMakeDataPointTable(t *testing.T) {
+
+	handler := makeTestDb()
+	defer handler.Close()
+
+	handler.MakeDataPointTable()
+
+}
+
 func TestInsertSomeDataDataPointDescription(t *testing.T) {
 
 	handler := makeTestDb()
@@ -85,18 +94,21 @@ func TestInsertSomeDataDataPointDescription(t *testing.T) {
 
 	fmt.Println("Make DataPointDescription table.")
 
-	var actData = DataPointDescription{1, "fgfd", "sfsdf", 5, 10}
+	var actData []DataPointDescription = randomDataPDesc(10)
 
 	if err = handler.MakeDataPointDescriptionTable(); err != nil {
 		t.Log("Making of DataPointDescription table failed.")
 		return
 	}
 
-	if _, err = handler.ModelInsert(&actData); err != nil {
-		t.Log("Making of DataPointDescription table failed. Error:" + err.Error())
-		return
-	}
+	for i := 0; i < 10; i++ {
 
+		if _, err = handler.ModelInsert(&actData[i]); err != nil {
+			t.Log("Making of DataPointDescription table failed. Error:" + err.Error())
+			return
+		}
+
+	}
 }
 
 func TestGetDataPointDescriptionTable(t *testing.T) {

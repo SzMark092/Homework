@@ -6,6 +6,10 @@
 </head>
 
 <body>
+  <script>
+    type = "text/javascript"
+    src = FrontHandler.js
+  </script>
   <p>Data type:</p>
   <select name="data types" id="dataSelector">
     <option value="1">DataPointDescription</option>
@@ -18,54 +22,9 @@
     <option value="2">GetAllData</option>
   </select>
   <p>
-    <button type="button" onclick="callChoosenAction()">Do action</button>
+    <button type="button" onclick=callChoosenAction()>Do action</button>
   </p>
   <p id="result"></p>
-  <script>
-
-    import xhttp from xhttp;
-
-    function getTableData(dataType) {
-
-
-      var xhttp = new XMLHttpRequest();
-
-      xhttp.responseType = 'json';
-      xhttp.open("GET", "localhost:8080/getTable?tableType=" + dataType, false);
-      xhttp.send();
-
-      var jsonInput = JSON.parse(xhttp.response);
-
-      var resultelement = document.getElementById('result').appendChild(document.createTextNode(jsonInput))
-
-    }
-
-    function createTable(dataType) {
-
-      xhttp.open("POST", "localhost:8080/create?tableType=" + dataType, false);
-      xhttp.send();
-
-    }
-
-    function callChoosenAction() {
-
-      var actionType = document.getElementById('actionSelector').value
-
-      var dataType = document.getElementById('dataSelector').value
-
-      if (actionType == 1) {
-
-        createTable(dataType)
-
-      } else {
-
-        getTableData(dataType)
-
-      }
-
-    }
-
-  </script>
 </body>
 
 </html>

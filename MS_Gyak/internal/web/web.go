@@ -42,8 +42,8 @@ func (h RestApi) getTableResponse(w http.ResponseWriter, r *http.Request) {
 	var typeCode int
 	var dataTable []byte
 
-	r.ParseForm()
-	typeCode, _ = strconv.Atoi(r.Form.Get("typeCode"))
+	typeCode, _ = strconv.Atoi(r.URL.Query().Get("typeCode"))
+
 	dataTable, err = h.makeJson(typeCode)
 
 	if err != nil {
@@ -52,6 +52,7 @@ func (h RestApi) getTableResponse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+
 	w.Write(dataTable)
 
 }
@@ -62,24 +63,17 @@ func (h RestApi) createTableResponse(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var typeCode int
 
-	r.ParseForm()
-
-	typeCode, _ = strconv.Atoi(r.Form.Get("typeCode"))
+	typeCode, _ = strconv.Atoi(r.URL.Query().Get("typeCode"))
 
 	switch typeCode {
-
 	case 1:
 		h.ActSQLhandler.MakeDataPointDescriptionTable()
-
 	case 2:
 		h.ActSQLhandler.MakeDataPointTable()
-
 	case 3:
 		h.ActSQLhandler.MakeModuleTable()
-
 	default:
 		err = errors.New("Wrong type-code.")
-
 	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
