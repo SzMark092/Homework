@@ -25,7 +25,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/net/netutil"
 
-	"PSQL_Server/restapi/operations"
+	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi/operations"
 )
 
 const (

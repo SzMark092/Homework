@@ -11,10 +11,10 @@ import (
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 
-	"PSQL_Server/restapi/operations"
-	"PSQL_Server/restapi/operations/create_table"
-	"PSQL_Server/restapi/operations/get_table"
-	"PSQL_Server/restapi/operations/home_page"
+	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi/operations"
+	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi/operations/create_table"
+	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi/operations/get_table"
+	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi/operations/home_page"
 )
 
 //go:generate swagger generate server --target ../src/PSQL_Server --name  --spec ../swagger_server/swagger.yaml --principal SQL_API --skip-models
