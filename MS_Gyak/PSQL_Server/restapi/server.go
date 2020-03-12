@@ -25,7 +25,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/net/netutil"
 
-	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi/operations"
+	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations"
 )
 
 const (
@@ -39,7 +39,6 @@ var defaultSchemes []string
 func init() {
 	defaultSchemes = []string{
 		schemeHTTP,
-		schemeHTTPS,
 	}
 }
 

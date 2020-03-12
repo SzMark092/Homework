@@ -7,7 +7,6 @@ This is a simple server for my homework. It can make request towards a PSQL data
 
     Schemes:
       http
-      https
     Host: petstore.swagger.io
     BasePath: /
     Version: 2.0.0

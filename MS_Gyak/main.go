@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi"
-	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi/operations"
+	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi"
+	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations"
 	loads "github.com/go-openapi/loads"
 	flags "github.com/jessevdk/go-flags"
 )

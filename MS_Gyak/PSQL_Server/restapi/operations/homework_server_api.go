@@ -20,9 +20,9 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi/operations/create_table"
-	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi/operations/get_table"
-	"github.com/SzMark092/MS_Gyak/src/PSQL_Server/restapi/operations/home_page"
+	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/create_table"
+	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/get_table"
+	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/home_page"
 )
 
 // NewHomeworkServerAPI creates a new HomeworkServer instance
