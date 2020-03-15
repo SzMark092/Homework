@@ -20,9 +20,7 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/create_table"
-	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/get_table"
-	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/home_page"
+	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/sql_web_handler"
 )
 
 // NewHomeworkServerAPI creates a new HomeworkServer instance
@@ -45,14 +43,14 @@ func NewHomeworkServerAPI(spec *loads.Document) *HomeworkServerAPI {
 		HTMLProducer: runtime.ProducerFunc(func(w io.Writer, data interface{}) error {
 			return errors.NotImplemented("html producer has not yet been implemented")
 		}),
-		CreateTableCreateTableHandler: create_table.CreateTableHandlerFunc(func(params create_table.CreateTableParams) middleware.Responder {
-			return middleware.NotImplemented("operation CreateTableCreateTable has not yet been implemented")
+		SQLWebHandlerCreateTableHandler: sql_web_handler.CreateTableHandlerFunc(func(params sql_web_handler.CreateTableParams) middleware.Responder {
+			return middleware.NotImplemented("operation SQLWebHandlerCreateTable has not yet been implemented")
 		}),
-		GetTableGetTableHandler: get_table.GetTableHandlerFunc(func(params get_table.GetTableParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetTableGetTable has not yet been implemented")
+		SQLWebHandlerGetTableHandler: sql_web_handler.GetTableHandlerFunc(func(params sql_web_handler.GetTableParams) middleware.Responder {
+			return middleware.NotImplemented("operation SQLWebHandlerGetTable has not yet been implemented")
 		}),
-		HomePageGetHomePageHandler: home_page.GetHomePageHandlerFunc(func(params home_page.GetHomePageParams) middleware.Responder {
-			return middleware.NotImplemented("operation HomePageGetHomePage has not yet been implemented")
+		SQLWebHandlerGetHomePageHandler: sql_web_handler.GetHomePageHandlerFunc(func(params sql_web_handler.GetHomePageParams) middleware.Responder {
+			return middleware.NotImplemented("operation SQLWebHandlerGetHomePage has not yet been implemented")
 		}),
 	}
 }
@@ -87,12 +85,12 @@ type HomeworkServerAPI struct {
 	// HTMLProducer registers a producer for a "text/html" mime type
 	HTMLProducer runtime.Producer
 
-	// CreateTableCreateTableHandler sets the operation handler for the create table operation
-	CreateTableCreateTableHandler create_table.CreateTableHandler
-	// GetTableGetTableHandler sets the operation handler for the get table operation
-	GetTableGetTableHandler get_table.GetTableHandler
-	// HomePageGetHomePageHandler sets the operation handler for the get home page operation
-	HomePageGetHomePageHandler home_page.GetHomePageHandler
+	// SQLWebHandlerCreateTableHandler sets the operation handler for the create table operation
+	SQLWebHandlerCreateTableHandler sql_web_handler.CreateTableHandler
+	// SQLWebHandlerGetTableHandler sets the operation handler for the get table operation
+	SQLWebHandlerGetTableHandler sql_web_handler.GetTableHandler
+	// SQLWebHandlerGetHomePageHandler sets the operation handler for the get home page operation
+	SQLWebHandlerGetHomePageHandler sql_web_handler.GetHomePageHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -160,16 +158,16 @@ func (o *HomeworkServerAPI) Validate() error {
 		unregistered = append(unregistered, "HTMLProducer")
 	}
 
-	if o.CreateTableCreateTableHandler == nil {
-		unregistered = append(unregistered, "create_table.CreateTableHandler")
+	if o.SQLWebHandlerCreateTableHandler == nil {
+		unregistered = append(unregistered, "sql_web_handler.CreateTableHandler")
 	}
 
-	if o.GetTableGetTableHandler == nil {
-		unregistered = append(unregistered, "get_table.GetTableHandler")
+	if o.SQLWebHandlerGetTableHandler == nil {
+		unregistered = append(unregistered, "sql_web_handler.GetTableHandler")
 	}
 
-	if o.HomePageGetHomePageHandler == nil {
-		unregistered = append(unregistered, "home_page.GetHomePageHandler")
+	if o.SQLWebHandlerGetHomePageHandler == nil {
+		unregistered = append(unregistered, "sql_web_handler.GetHomePageHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -276,17 +274,17 @@ func (o *HomeworkServerAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/CreateTable"] = create_table.NewCreateTable(o.context, o.CreateTableCreateTableHandler)
+	o.handlers["POST"]["/CreateTable"] = sql_web_handler.NewCreateTable(o.context, o.SQLWebHandlerCreateTableHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/GetTable"] = get_table.NewGetTable(o.context, o.GetTableGetTableHandler)
+	o.handlers["GET"]["/GetTable"] = sql_web_handler.NewGetTable(o.context, o.SQLWebHandlerGetTableHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/HomePage"] = home_page.NewGetHomePage(o.context, o.HomePageGetHomePageHandler)
+	o.handlers["GET"]["/HomePage"] = sql_web_handler.NewGetHomePage(o.context, o.SQLWebHandlerGetHomePageHandler)
 
 }
 

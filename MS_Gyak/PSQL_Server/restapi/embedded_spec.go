@@ -36,7 +36,7 @@ func init() {
     "/CreateTable": {
       "post": {
         "tags": [
-          "CreateTable"
+          "SQLWebHandler"
         ],
         "summary": "Create a table with the given code.",
         "operationId": "CreateTable",
@@ -62,8 +62,9 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "GetTable"
+          "SQLWebHandler"
         ],
+        "summary": "Get the specified table from the SQL server.",
         "operationId": "GetTable",
         "parameters": [
           {
@@ -90,7 +91,7 @@ func init() {
           "text/html"
         ],
         "tags": [
-          "HomePage"
+          "SQLWebHandler"
         ],
         "summary": "Get the home page of REST API to send requests to the server.",
         "operationId": "getHomePage",
@@ -191,7 +192,7 @@ func init() {
     "/CreateTable": {
       "post": {
         "tags": [
-          "CreateTable"
+          "SQLWebHandler"
         ],
         "summary": "Create a table with the given code.",
         "operationId": "CreateTable",
@@ -217,8 +218,9 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "GetTable"
+          "SQLWebHandler"
         ],
+        "summary": "Get the specified table from the SQL server.",
         "operationId": "GetTable",
         "parameters": [
           {
@@ -245,7 +247,7 @@ func init() {
           "text/html"
         ],
         "tags": [
-          "HomePage"
+          "SQLWebHandler"
         ],
         "summary": "Get the home page of REST API to send requests to the server.",
         "operationId": "getHomePage",

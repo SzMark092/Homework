@@ -1,4 +1,4 @@
-package web
+package sql_web_handler
 
 import (
 	"encoding/json"

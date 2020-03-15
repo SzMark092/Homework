@@ -1,64 +1,15 @@
-package web
+package sql_web_handler
 
 import (
-	"encoding/json"
-	"errors"
-	"net/http"
-	"os"
-	"strconv"
+	"context"
+	"sync"
 
-	"github.com/SzMark092/MS_Gyak/internal/db"
+	"get_table"
+	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/sql_web_handler"
+	"github.com/go-openapi/runtime/middleware"
 )
 
-//html API struct
-type RestApi struct {
-	PortNum string
-
-	ActSQLhandler *db.Handler
-}
-
-//Start listening, get handle functions.
-func (h RestApi) StartListen() error {
-
-	http.HandleFunc("/create/", h.createTableResponse)
-	http.HandleFunc("/getTable/", h.getTableResponse)
-	http.HandleFunc("/", h.getHtmlPage)
-
-	err := http.ListenAndServe(h.PortNum, nil)
-
-	return err
-}
-
-//Get a blank data page.
-func (h RestApi) getHtmlPage(w http.ResponseWriter, r *http.Request) {
-	wd, _ := os.Getwd()
-	http.ServeFile(w, r, wd+"/html/HomePage.html" /*+r.URL.EscapedPath()*/)
-}
-
-//Get the specified table.
-func (h RestApi) getTableResponse(w http.ResponseWriter, r *http.Request) {
-
-	var err error
-	var typeCode int
-	var dataTable []byte
-
-	typeCode, _ = strconv.Atoi(r.URL.Query().Get("typeCode"))
-
-	dataTable, err = h.makeJson(typeCode)
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-
-	w.Write(dataTable)
-
-}
-
-//Create the specified table.
-func (h RestApi) createTableResponse(w http.ResponseWriter, r *http.Request) {
+func (p *Pet) create_table(ctx context.Context, params pet.PetCreateParams) middleware.Responder {
 
 	var err error
 	var typeCode int
@@ -79,6 +30,34 @@ func (h RestApi) createTableResponse(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+}
+
+func (p *Pet) get_table(ctx context.Context, params pet.PetCreateParams) middleware.Responder {
+
+	var err error
+	var typeCode int
+	var dataTable []byte
+
+	typeCode, _ = strconv.Atoi(r.URL.Query().Get("typeCode"))
+
+	dataTable, err = h.makeJson(typeCode)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	w.Write(dataTable)
+
+}
+
+func (p *Pet) home_page(ctx context.Context, params pet.PetCreateParams) middleware.Responder {
+
+	wd, _ := os.Getwd()
+	http.ServeFile(w, r, wd+"/html/HomePage.html" /*+r.URL.EscapedPath()*/)
 
 }
 
