@@ -2,10 +2,8 @@ package sql_web_handler
 
 import (
 	"context"
-	"sync"
 
-	"get_table"
-	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/sql_web_handler"
+	//"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/sql_web_handler"
 	"github.com/go-openapi/runtime/middleware"
 )
 
