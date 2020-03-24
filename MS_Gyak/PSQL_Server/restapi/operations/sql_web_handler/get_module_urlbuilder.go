@@ -11,15 +11,15 @@ import (
 	golangswaggerpaths "path"
 )
 
-// GetHomePageURL generates an URL for the get home page operation
-type GetHomePageURL struct {
+// GetModuleURL generates an URL for the get module operation
+type GetModuleURL struct {
 	_basePath string
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetHomePageURL) WithBasePath(bp string) *GetHomePageURL {
+func (o *GetModuleURL) WithBasePath(bp string) *GetModuleURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -27,15 +27,15 @@ func (o *GetHomePageURL) WithBasePath(bp string) *GetHomePageURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetHomePageURL) SetBasePath(bp string) {
+func (o *GetModuleURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *GetHomePageURL) Build() (*url.URL, error) {
+func (o *GetModuleURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/HomePage"
+	var _path = "/GetModuleTable"
 
 	_basePath := o._basePath
 	if _basePath == "" {
@@ -47,7 +47,7 @@ func (o *GetHomePageURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *GetHomePageURL) Must(u *url.URL, err error) *url.URL {
+func (o *GetModuleURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -58,17 +58,17 @@ func (o *GetHomePageURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *GetHomePageURL) String() string {
+func (o *GetModuleURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *GetHomePageURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *GetModuleURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on GetHomePageURL")
+		return nil, errors.New("scheme is required for a full url on GetModuleURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on GetHomePageURL")
+		return nil, errors.New("host is required for a full url on GetModuleURL")
 	}
 
 	base, err := o.Build()
@@ -82,6 +82,6 @@ func (o *GetHomePageURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *GetHomePageURL) StringFull(scheme, host string) string {
+func (o *GetModuleURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

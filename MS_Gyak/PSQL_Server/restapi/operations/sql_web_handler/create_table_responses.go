@@ -11,6 +11,30 @@ import (
 	"github.com/go-openapi/runtime"
 )
 
+// CreateTableOKCode is the HTTP code returned for type CreateTableOK
+const CreateTableOKCode int = 200
+
+/*CreateTableOK Table is ready.
+
+swagger:response createTableOK
+*/
+type CreateTableOK struct {
+}
+
+// NewCreateTableOK creates CreateTableOK with default headers values
+func NewCreateTableOK() *CreateTableOK {
+
+	return &CreateTableOK{}
+}
+
+// WriteResponse to the client
+func (o *CreateTableOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
+	rw.WriteHeader(200)
+}
+
 // CreateTableMethodNotAllowedCode is the HTTP code returned for type CreateTableMethodNotAllowed
 const CreateTableMethodNotAllowedCode int = 405
 

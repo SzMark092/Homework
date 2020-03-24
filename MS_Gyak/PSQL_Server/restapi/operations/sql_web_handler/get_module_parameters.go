@@ -12,18 +12,18 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-// NewGetHomePageParams creates a new GetHomePageParams object
+// NewGetModuleParams creates a new GetModuleParams object
 // no default values defined in spec.
-func NewGetHomePageParams() GetHomePageParams {
+func NewGetModuleParams() GetModuleParams {
 
-	return GetHomePageParams{}
+	return GetModuleParams{}
 }
 
-// GetHomePageParams contains all the bound params for the get home page operation
+// GetModuleParams contains all the bound params for the get module operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters getHomePage
-type GetHomePageParams struct {
+// swagger:parameters GetModule
+type GetModuleParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -32,8 +32,8 @@ type GetHomePageParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewGetHomePageParams() beforehand.
-func (o *GetHomePageParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewGetModuleParams() beforehand.
+func (o *GetModuleParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r

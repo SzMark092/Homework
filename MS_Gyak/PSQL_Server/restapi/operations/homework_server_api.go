@@ -7,7 +7,6 @@ package operations
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"strings"
 
@@ -40,17 +39,17 @@ func NewHomeworkServerAPI(spec *loads.Document) *HomeworkServerAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
-		HTMLProducer: runtime.ProducerFunc(func(w io.Writer, data interface{}) error {
-			return errors.NotImplemented("html producer has not yet been implemented")
-		}),
 		SQLWebHandlerCreateTableHandler: sql_web_handler.CreateTableHandlerFunc(func(params sql_web_handler.CreateTableParams) middleware.Responder {
 			return middleware.NotImplemented("operation SQLWebHandlerCreateTable has not yet been implemented")
 		}),
-		SQLWebHandlerGetTableHandler: sql_web_handler.GetTableHandlerFunc(func(params sql_web_handler.GetTableParams) middleware.Responder {
-			return middleware.NotImplemented("operation SQLWebHandlerGetTable has not yet been implemented")
+		SQLWebHandlerGetDataPointDescriptionTableHandler: sql_web_handler.GetDataPointDescriptionTableHandlerFunc(func(params sql_web_handler.GetDataPointDescriptionTableParams) middleware.Responder {
+			return middleware.NotImplemented("operation SQLWebHandlerGetDataPointDescriptionTable has not yet been implemented")
 		}),
-		SQLWebHandlerGetHomePageHandler: sql_web_handler.GetHomePageHandlerFunc(func(params sql_web_handler.GetHomePageParams) middleware.Responder {
-			return middleware.NotImplemented("operation SQLWebHandlerGetHomePage has not yet been implemented")
+		SQLWebHandlerGetDataPointTableHandler: sql_web_handler.GetDataPointTableHandlerFunc(func(params sql_web_handler.GetDataPointTableParams) middleware.Responder {
+			return middleware.NotImplemented("operation SQLWebHandlerGetDataPointTable has not yet been implemented")
+		}),
+		SQLWebHandlerGetModuleHandler: sql_web_handler.GetModuleHandlerFunc(func(params sql_web_handler.GetModuleParams) middleware.Responder {
+			return middleware.NotImplemented("operation SQLWebHandlerGetModule has not yet been implemented")
 		}),
 	}
 }
@@ -82,15 +81,15 @@ type HomeworkServerAPI struct {
 
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer runtime.Producer
-	// HTMLProducer registers a producer for a "text/html" mime type
-	HTMLProducer runtime.Producer
 
 	// SQLWebHandlerCreateTableHandler sets the operation handler for the create table operation
 	SQLWebHandlerCreateTableHandler sql_web_handler.CreateTableHandler
-	// SQLWebHandlerGetTableHandler sets the operation handler for the get table operation
-	SQLWebHandlerGetTableHandler sql_web_handler.GetTableHandler
-	// SQLWebHandlerGetHomePageHandler sets the operation handler for the get home page operation
-	SQLWebHandlerGetHomePageHandler sql_web_handler.GetHomePageHandler
+	// SQLWebHandlerGetDataPointDescriptionTableHandler sets the operation handler for the get data point description table operation
+	SQLWebHandlerGetDataPointDescriptionTableHandler sql_web_handler.GetDataPointDescriptionTableHandler
+	// SQLWebHandlerGetDataPointTableHandler sets the operation handler for the get data point table operation
+	SQLWebHandlerGetDataPointTableHandler sql_web_handler.GetDataPointTableHandler
+	// SQLWebHandlerGetModuleHandler sets the operation handler for the get module operation
+	SQLWebHandlerGetModuleHandler sql_web_handler.GetModuleHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -154,20 +153,20 @@ func (o *HomeworkServerAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.HTMLProducer == nil {
-		unregistered = append(unregistered, "HTMLProducer")
-	}
-
 	if o.SQLWebHandlerCreateTableHandler == nil {
 		unregistered = append(unregistered, "sql_web_handler.CreateTableHandler")
 	}
 
-	if o.SQLWebHandlerGetTableHandler == nil {
-		unregistered = append(unregistered, "sql_web_handler.GetTableHandler")
+	if o.SQLWebHandlerGetDataPointDescriptionTableHandler == nil {
+		unregistered = append(unregistered, "sql_web_handler.GetDataPointDescriptionTableHandler")
 	}
 
-	if o.SQLWebHandlerGetHomePageHandler == nil {
-		unregistered = append(unregistered, "sql_web_handler.GetHomePageHandler")
+	if o.SQLWebHandlerGetDataPointTableHandler == nil {
+		unregistered = append(unregistered, "sql_web_handler.GetDataPointTableHandler")
+	}
+
+	if o.SQLWebHandlerGetModuleHandler == nil {
+		unregistered = append(unregistered, "sql_web_handler.GetModuleHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -226,9 +225,6 @@ func (o *HomeworkServerAPI) ProducersFor(mediaTypes []string) map[string]runtime
 		case "application/json":
 			result["application/json"] = o.JSONProducer
 
-		case "text/html":
-			result["text/html"] = o.HTMLProducer
-
 		}
 
 		if p, ok := o.customProducers[mt]; ok {
@@ -279,12 +275,17 @@ func (o *HomeworkServerAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/GetTable"] = sql_web_handler.NewGetTable(o.context, o.SQLWebHandlerGetTableHandler)
+	o.handlers["GET"]["/GetDataPointDescriptionTable"] = sql_web_handler.NewGetDataPointDescriptionTable(o.context, o.SQLWebHandlerGetDataPointDescriptionTableHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/HomePage"] = sql_web_handler.NewGetHomePage(o.context, o.SQLWebHandlerGetHomePageHandler)
+	o.handlers["GET"]["/GetDataPointTable"] = sql_web_handler.NewGetDataPointTable(o.context, o.SQLWebHandlerGetDataPointTableHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/GetModuleTable"] = sql_web_handler.NewGetModule(o.context, o.SQLWebHandlerGetModuleHandler)
 
 }
 

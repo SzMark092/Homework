@@ -50,13 +50,16 @@ func init() {
           }
         ],
         "responses": {
+          "200": {
+            "description": "Table is ready."
+          },
           "405": {
             "description": "Invalid input"
           }
         }
       }
     },
-    "/GetTable": {
+    "/GetDataPointDescriptionTable": {
       "get": {
         "produces": [
           "application/json"
@@ -65,7 +68,33 @@ func init() {
           "SQLWebHandler"
         ],
         "summary": "Get the specified table from the SQL server.",
-        "operationId": "GetTable",
+        "operationId": "GetDataPointDescriptionTable",
+        "responses": {
+          "200": {
+            "description": "JSON object containing table information",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DataPointDescription"
+              }
+            }
+          },
+          "404": {
+            "description": "There is no data to send"
+          }
+        }
+      }
+    },
+    "/GetDataPointTable": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "SQLWebHandler"
+        ],
+        "summary": "Get the specified table from the SQL server.",
+        "operationId": "GetDataPointTable",
         "parameters": [
           {
             "type": "integer",
@@ -77,27 +106,42 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "JSON object containing table information"
+            "description": "JSON object containing table information",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DataPoint"
+              }
+            }
           },
-          "405": {
-            "description": "Invalid input"
+          "404": {
+            "description": "There is no data to send"
           }
         }
       }
     },
-    "/HomePage": {
+    "/GetModuleTable": {
       "get": {
         "produces": [
-          "text/html"
+          "application/json"
         ],
         "tags": [
           "SQLWebHandler"
         ],
-        "summary": "Get the home page of REST API to send requests to the server.",
-        "operationId": "getHomePage",
+        "summary": "Get the specified table from the SQL server.",
+        "operationId": "GetModule",
         "responses": {
           "200": {
-            "description": "Home page is ready."
+            "description": "JSON object containing table information",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Module"
+              }
+            }
+          },
+          "404": {
+            "description": "There is no data to send"
           }
         }
       }
@@ -160,8 +204,7 @@ func init() {
           "format": "int64"
         },
         "Max": {
-          "type": "integer",
-          "format": "int64"
+          "type": "integer"
         },
         "Name": {
           "type": "string"
@@ -171,7 +214,13 @@ func init() {
         }
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "description": "The model that handle the requests",
+      "name": "SQLWebHandler"
+    }
+  ]
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
   "schemes": [
@@ -206,13 +255,16 @@ func init() {
           }
         ],
         "responses": {
+          "200": {
+            "description": "Table is ready."
+          },
           "405": {
             "description": "Invalid input"
           }
         }
       }
     },
-    "/GetTable": {
+    "/GetDataPointDescriptionTable": {
       "get": {
         "produces": [
           "application/json"
@@ -221,7 +273,33 @@ func init() {
           "SQLWebHandler"
         ],
         "summary": "Get the specified table from the SQL server.",
-        "operationId": "GetTable",
+        "operationId": "GetDataPointDescriptionTable",
+        "responses": {
+          "200": {
+            "description": "JSON object containing table information",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DataPointDescription"
+              }
+            }
+          },
+          "404": {
+            "description": "There is no data to send"
+          }
+        }
+      }
+    },
+    "/GetDataPointTable": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "SQLWebHandler"
+        ],
+        "summary": "Get the specified table from the SQL server.",
+        "operationId": "GetDataPointTable",
         "parameters": [
           {
             "type": "integer",
@@ -233,27 +311,42 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "JSON object containing table information"
+            "description": "JSON object containing table information",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DataPoint"
+              }
+            }
           },
-          "405": {
-            "description": "Invalid input"
+          "404": {
+            "description": "There is no data to send"
           }
         }
       }
     },
-    "/HomePage": {
+    "/GetModuleTable": {
       "get": {
         "produces": [
-          "text/html"
+          "application/json"
         ],
         "tags": [
           "SQLWebHandler"
         ],
-        "summary": "Get the home page of REST API to send requests to the server.",
-        "operationId": "getHomePage",
+        "summary": "Get the specified table from the SQL server.",
+        "operationId": "GetModule",
         "responses": {
           "200": {
-            "description": "Home page is ready."
+            "description": "JSON object containing table information",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Module"
+              }
+            }
+          },
+          "404": {
+            "description": "There is no data to send"
           }
         }
       }
@@ -316,8 +409,7 @@ func init() {
           "format": "int64"
         },
         "Max": {
-          "type": "integer",
-          "format": "int64"
+          "type": "integer"
         },
         "Name": {
           "type": "string"
@@ -327,6 +419,12 @@ func init() {
         }
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "description": "The model that handle the requests",
+      "name": "SQLWebHandler"
+    }
+  ]
 }`))
 }

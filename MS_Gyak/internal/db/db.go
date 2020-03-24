@@ -6,6 +6,8 @@ import (
 
 	"github.com/go-pg/pg/v9"
 	"github.com/go-pg/pg/v9/orm"
+
+	models "github.com/SzMark092/MS_Gyak/PSQL_Server/models"
 )
 
 /*
@@ -30,28 +32,36 @@ func MakeConnection(name, password, serverName, database string) *pg.DB {
 	return conn
 }
 
+type PSQLServerConfig struct {
+	Name       string
+	Password   string
+	ServerName string
+	Database   string
+}
+
 type Handler struct {
 	conn      *pg.DB
 	tempTable bool
 }
 
-func NewHandler(conn *pg.DB, tempTable bool, createAllTable bool) (*Handler, error) {
+func NewHandler(actConfig PSQLServerConfig, tempTable bool, createAllTable bool) (*Handler, error) {
 	handler := &Handler{
-		conn:      conn,
 		tempTable: tempTable,
 	}
 
+	handler.conn = MakeConnection(actConfig.Name, actConfig.Password, actConfig.ServerName, actConfig.Database)
+
 	if createAllTable {
 
-		if err := handler.makeTable(&DataPointDescription{}); err != nil {
+		if err := handler.makeTable(&models.DataPointDescription{}); err != nil {
 			return nil, err
 		}
 
-		if err := handler.makeTable(&Module{}); err != nil {
+		if err := handler.makeTable(&models.Module{}); err != nil {
 			return nil, err
 		}
 
-		if err := handler.makeTable(&DataPoint{}); err != nil {
+		if err := handler.makeTable(&models.DataPoint{}); err != nil {
 			return nil, err
 		}
 
@@ -69,13 +79,13 @@ func getModelType(CodeOfType int) (interface{}, interface{}, error) {
 	switch CodeOfType {
 
 	case 1:
-		modelType = &DataPointDescription{}
-		modelTypeList = &[]DataPointDescription{}
+		modelType = &models.DataPointDescription{}
+		modelTypeList = &[]models.DataPointDescription{}
 	case 2:
-		modelType = &DataPoint{}
-		modelTypeList = &[]DataPoint{}
+		modelType = &models.DataPoint{}
+		modelTypeList = &[]models.DataPoint{}
 	case 3:
-		modelType = &Module{}
+		modelType = &models.Module{}
 	default:
 		err = errors.New("Wrong type-code.")
 	}
@@ -107,11 +117,11 @@ func (h Handler) ModelInsert(actModelStruct interface{}) (interface{}, error) {
 }
 
 //Get the DataPointDescription table.
-func (h Handler) GetDataPointDescriptionTable() ([]DataPointDescription, error) {
+func (h Handler) GetDataPointDescriptionTable() ([]*models.DataPointDescription, error) {
 
-	var rows []DataPointDescription
+	var rows []*models.DataPointDescription
 
-	count, err := h.conn.Model(&DataPointDescription{}).Count()
+	count, err := h.conn.Model(&models.DataPointDescription{}).Count()
 	if err != nil {
 		return nil, err
 	}
@@ -126,11 +136,11 @@ func (h Handler) GetDataPointDescriptionTable() ([]DataPointDescription, error) 
 }
 
 //Get the DataPoint table
-func (h Handler) GetDataPointTable() ([]DataPoint, error) {
+func (h Handler) GetDataPointTable() ([]*models.DataPoint, error) {
 
-	var rows []DataPoint
+	var rows []*models.DataPoint
 
-	count, err := h.conn.Model(&DataPoint{}).Count()
+	count, err := h.conn.Model(&models.DataPoint{}).Count()
 	if err != nil {
 		return nil, err
 	}
@@ -145,11 +155,11 @@ func (h Handler) GetDataPointTable() ([]DataPoint, error) {
 }
 
 //Get the DataPoint table
-func (h Handler) GetModuleTable() ([]Module, error) {
+func (h Handler) GetModuleTable() ([]*models.Module, error) {
 
-	var rows []Module
+	var rows []*models.Module
 
-	count, err := h.conn.Model(&Module{}).Count()
+	count, err := h.conn.Model(&models.Module{}).Count()
 	if err != nil {
 		return nil, err
 	}
@@ -165,18 +175,18 @@ func (h Handler) GetModuleTable() ([]Module, error) {
 
 //Make DataPointDescription table.
 func (h Handler) MakeDataPointDescriptionTable() error {
-	err := h.makeTable(&DataPointDescription{})
+	err := h.makeTable(&models.DataPointDescription{})
 	return err
 }
 
 //Make DataPoint table.
 func (h Handler) MakeDataPointTable() error {
-	err := h.makeTable(&DataPoint{})
+	err := h.makeTable(&models.DataPoint{})
 	return err
 }
 
 //Make Module table.
 func (h Handler) MakeModuleTable() error {
-	err := h.makeTable(&Module{})
+	err := h.makeTable(&models.Module{})
 	return err
 }

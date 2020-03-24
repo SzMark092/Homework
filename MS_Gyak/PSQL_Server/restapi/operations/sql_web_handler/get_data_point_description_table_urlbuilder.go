@@ -9,23 +9,17 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
-
-	"github.com/go-openapi/swag"
 )
 
-// GetTableURL generates an URL for the get table operation
-type GetTableURL struct {
-	TableType int64
-
+// GetDataPointDescriptionTableURL generates an URL for the get data point description table operation
+type GetDataPointDescriptionTableURL struct {
 	_basePath string
-	// avoid unkeyed usage
-	_ struct{}
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetTableURL) WithBasePath(bp string) *GetTableURL {
+func (o *GetDataPointDescriptionTableURL) WithBasePath(bp string) *GetDataPointDescriptionTableURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -33,15 +27,15 @@ func (o *GetTableURL) WithBasePath(bp string) *GetTableURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetTableURL) SetBasePath(bp string) {
+func (o *GetDataPointDescriptionTableURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *GetTableURL) Build() (*url.URL, error) {
+func (o *GetDataPointDescriptionTableURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/GetTable"
+	var _path = "/GetDataPointDescriptionTable"
 
 	_basePath := o._basePath
 	if _basePath == "" {
@@ -49,20 +43,11 @@ func (o *GetTableURL) Build() (*url.URL, error) {
 	}
 	result.Path = golangswaggerpaths.Join(_basePath, _path)
 
-	qs := make(url.Values)
-
-	tableType := swag.FormatInt64(o.TableType)
-	if tableType != "" {
-		qs.Set("TableType", tableType)
-	}
-
-	result.RawQuery = qs.Encode()
-
 	return &result, nil
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *GetTableURL) Must(u *url.URL, err error) *url.URL {
+func (o *GetDataPointDescriptionTableURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -73,17 +58,17 @@ func (o *GetTableURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *GetTableURL) String() string {
+func (o *GetDataPointDescriptionTableURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *GetTableURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *GetDataPointDescriptionTableURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on GetTableURL")
+		return nil, errors.New("scheme is required for a full url on GetDataPointDescriptionTableURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on GetTableURL")
+		return nil, errors.New("host is required for a full url on GetDataPointDescriptionTableURL")
 	}
 
 	base, err := o.Build()
@@ -97,6 +82,6 @@ func (o *GetTableURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *GetTableURL) StringFull(scheme, host string) string {
+func (o *GetDataPointDescriptionTableURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

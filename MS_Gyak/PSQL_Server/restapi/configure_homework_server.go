@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 
 	"github.com/Stratoscale/swagger/query"
@@ -30,8 +29,9 @@ const AuthKey contextKey = "Auth"
 // SQLWebHandlerAPI
 type SQLWebHandlerAPI interface {
 	CreateTable(ctx context.Context, params sql_web_handler.CreateTableParams) middleware.Responder
-	GetTable(ctx context.Context, params sql_web_handler.GetTableParams) middleware.Responder
-	GetHomePage(ctx context.Context, params sql_web_handler.GetHomePageParams) middleware.Responder
+	GetDataPointDescriptionTable(ctx context.Context, params sql_web_handler.GetDataPointDescriptionTableParams) middleware.Responder
+	GetDataPointTable(ctx context.Context, params sql_web_handler.GetDataPointTableParams) middleware.Responder
+	GetModule(ctx context.Context, params sql_web_handler.GetModuleParams) middleware.Responder
 }
 
 // Config is configuration for Handler
@@ -60,20 +60,21 @@ func Handler(c Config) (http.Handler, error) {
 
 	api.JSONConsumer = runtime.JSONConsumer()
 	api.JSONProducer = runtime.JSONProducer()
-	api.HTMLProducer = runtime.ProducerFunc(func(w io.Writer, data interface{}) error {
-		return errors.NotImplemented("html producer has not yet been implemented")
-	})
 	api.SQLWebHandlerCreateTableHandler = sql_web_handler.CreateTableHandlerFunc(func(params sql_web_handler.CreateTableParams) middleware.Responder {
 		ctx := params.HTTPRequest.Context()
 		return c.SQLWebHandlerAPI.CreateTable(ctx, params)
 	})
-	api.SQLWebHandlerGetTableHandler = sql_web_handler.GetTableHandlerFunc(func(params sql_web_handler.GetTableParams) middleware.Responder {
+	api.SQLWebHandlerGetDataPointDescriptionTableHandler = sql_web_handler.GetDataPointDescriptionTableHandlerFunc(func(params sql_web_handler.GetDataPointDescriptionTableParams) middleware.Responder {
 		ctx := params.HTTPRequest.Context()
-		return c.SQLWebHandlerAPI.GetTable(ctx, params)
+		return c.SQLWebHandlerAPI.GetDataPointDescriptionTable(ctx, params)
 	})
-	api.SQLWebHandlerGetHomePageHandler = sql_web_handler.GetHomePageHandlerFunc(func(params sql_web_handler.GetHomePageParams) middleware.Responder {
+	api.SQLWebHandlerGetDataPointTableHandler = sql_web_handler.GetDataPointTableHandlerFunc(func(params sql_web_handler.GetDataPointTableParams) middleware.Responder {
 		ctx := params.HTTPRequest.Context()
-		return c.SQLWebHandlerAPI.GetHomePage(ctx, params)
+		return c.SQLWebHandlerAPI.GetDataPointTable(ctx, params)
+	})
+	api.SQLWebHandlerGetModuleHandler = sql_web_handler.GetModuleHandlerFunc(func(params sql_web_handler.GetModuleParams) middleware.Responder {
+		ctx := params.HTTPRequest.Context()
+		return c.SQLWebHandlerAPI.GetModule(ctx, params)
 	})
 	api.ServerShutdown = func() {}
 	return api.Serve(c.InnerMiddleware), nil

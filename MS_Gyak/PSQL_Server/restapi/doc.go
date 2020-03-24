@@ -17,7 +17,6 @@ This is a simple server for my homework. It can make request towards a PSQL data
 
     Produces:
     - application/json
-    - text/html
 
 swagger:meta
 */
