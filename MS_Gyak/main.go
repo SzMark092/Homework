@@ -19,6 +19,10 @@ func main() {
 
 	p, err1 := web.New()
 
+	if err1 != nil {
+		log.Fatal(err1)
+	}
+
 	// Initiate the http handler, with the objects that are implementing the business logic.
 	h, err := restapi.Handler(restapi.Config{
 		SQLWebHandlerAPI: p,

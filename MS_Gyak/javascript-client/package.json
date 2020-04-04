@@ -1,0 +1,22 @@
+{
+  "name": "homework_server",
+  "version": "2.0.0",
+  "description": "This_is_a_simple_server_for_my_homework__It_can_make_request_towards_a_PSQL_database_and_get_full_tables_of_data_from_it_",
+  "license": "Unlicense",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "browser": {
+    "fs": false
+  },
+  "dependencies": {
+    "superagent": "3.7.0",
+    "querystring": "0.2.0"
+  },
+  "devDependencies": {
+    "mocha": "~2.3.4",
+    "sinon": "1.17.3",
+    "expect.js": "~0.3.1"
+  }
+}

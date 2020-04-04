@@ -1,0 +1,173 @@
+swagger: "2.0"
+info:
+  description: "This is a simple server for my homework. It can make request towards a PSQL database, and get full tables of data from it."
+  version: "2.0.0"
+  title: "Homework server"
+  contact:
+    email: "szmgepesz@gmail.com"
+host: "petstore.swagger.io"
+basePath: "/"
+
+schemes:
+- "http"
+
+tags:
+  - name: SQLWebHandler
+    description: The model that handle the requests 
+paths:
+  # /HomePage:
+  #   get:
+  #     tags: [SQLWebHandler]
+  #     summary: "Get the home page of REST API to send requests to the server."
+  #     description: ""
+  #     operationId: "getHomePage"
+  #     produces:
+  #     - "text/html"
+  #     responses:
+  #       200:
+  #         description: "Home page is ready."
+  
+  /CreateTable:
+    post:
+      tags: [SQLWebHandler]
+      summary: "Create a table with the given code."
+      description: ""
+      operationId: "CreateTable"
+      parameters:
+      - name: "TableType"
+        in: "query"
+        description: "Type of the table that have to be created."
+        type: "integer"
+        required: true
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      responses:
+        200: 
+          description: "Table is ready."
+        405:
+          description: "Invalid input"
+          
+  /GetDataPointDescriptionTable:
+    get:
+      tags: [SQLWebHandler]
+      summary: "Get the specified table from the SQL server."
+      description: ""
+      operationId: "GetDataPointDescriptionTable"
+      # parameters:
+      # - name: "TableType"
+      #   in: "query"
+      #   type: "integer"
+      #   description: "Type of the table that have to be created."
+      #   required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "JSON object containing table information"
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataPointDescription'
+        404:
+          description: "There is no data to send" 
+          
+  /GetDataPointTable:
+    get:
+      tags: [SQLWebHandler]
+      summary: "Get the specified table from the SQL server."
+      description: ""
+      operationId: "GetDataPointTable"
+      parameters:
+      - name: "TableType"
+        in: "query"
+        type: "integer"
+        description: "Type of the table that have to be created."
+        required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "JSON object containing table information"
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataPoint'
+        404:
+          description: "There is no data to send" 
+          
+  /GetModuleTable:
+    get:
+      tags: [SQLWebHandler]
+      summary: "Get the specified table from the SQL server."
+      description: ""
+      operationId: "GetModule"
+      # parameters:
+      # - name: "TableType"
+      #   in: "query"
+      #   type: "integer"
+      #   description: "Type of the table that have to be created."
+      #   required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "JSON object containing table information"
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Module'
+        404:
+          description: "There is no data to send"     
+          
+definitions:
+
+  DataPointDescription:
+    type: "object"
+    properties:
+      ID:
+        type: "integer"
+        format: "int64"
+      Name:
+        type: "string"
+      Title:
+        type: "string"
+      Max:
+        type: "integer"
+        format: "int64"
+      Min:
+        type: "integer"
+        format: "int64"
+        
+  DataPoint:
+    type: "object"
+    properties:
+      ID:
+        type: "integer"
+        format: "int64"
+      Timestamp:
+        type: "string"
+        format: "date-time"
+      DataPointDescription:
+        type: "object"
+        format: $ref:"#/definitions/DataPointDescription"
+      Module:
+        type: "object"
+        format: $ref:"#/definitions/Module"
+      Value:
+        type: "number"
+        format: "float"
+        
+  Module:
+    type: "object"
+    properties:
+      ID:
+        type: "integer"
+        format: "int64"
+      Name:
+        type: "string"
+      Title:
+        type: "string"
+      Max:
+        type: "integer"

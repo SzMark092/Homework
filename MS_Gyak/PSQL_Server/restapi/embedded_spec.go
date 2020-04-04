@@ -35,6 +35,12 @@ func init() {
   "paths": {
     "/CreateTable": {
       "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "tags": [
           "SQLWebHandler"
         ],
@@ -240,6 +246,12 @@ func init() {
   "paths": {
     "/CreateTable": {
       "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "tags": [
           "SQLWebHandler"
         ],

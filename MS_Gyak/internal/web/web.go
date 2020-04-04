@@ -4,9 +4,6 @@ import (
 	"context"
 	"errors"
 
-	/*"github.com/go-pg/pg/v9"
-	"github.com/go-pg/pg/v9/orm"*/
-
 	"github.com/SzMark092/MS_Gyak/PSQL_Server/models"
 	"github.com/SzMark092/MS_Gyak/PSQL_Server/restapi/operations/sql_web_handler"
 	"github.com/SzMark092/MS_Gyak/internal/db"
@@ -17,19 +14,19 @@ type SqlWebHandler struct {
 	ActSQLhandler *db.Handler
 }
 
-func New() (SqlWebHandler, error) {
+func New() (*SqlWebHandler, error) {
 
-	var actHandler SqlWebHandler
+	actHandler := &SqlWebHandler{}
 	var err error
 
-	actConfig := &db.PSQLServerConfig{
+	actConfig := db.PSQLServerConfig{
 		Name:       "postgres",
 		Password:   "1234",
 		ServerName: "localhost:5432",
 		Database:   "prod",
 	}
 
-	actHandler.ActSQLhandler, err = db.NewHandler(*actConfig, false, false)
+	actHandler.ActSQLhandler, err = db.NewHandler(actConfig, false, false)
 
 	return actHandler, err
 
